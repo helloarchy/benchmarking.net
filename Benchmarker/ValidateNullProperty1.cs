@@ -1,27 +1,33 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Benchmarker
 {
     public class ValidateNullProperty1 : IValidationStep
     {
-        public (Reading reading, string error) ValidateReading(Reading reading)
+        public Reading ValidateReading(Reading reading)
         {
-            return reading.Property1 == null ? (reading, "Is null") : (reading, "");
+            if (reading.Property1 == null)
+            {
+                return reading;
+            }
+
+            return null;
         }
 
-        public List<(Reading reading, string error)> ValidateReadings(List<Reading> readings)
+        public List<Reading> ValidateReadings(List<Reading> readings)
         {
-            var invalidReadings = new List<(Reading reading, string error)>();
+            var invalidReadings = new List<Reading>();
 
             foreach (var reading in readings)
             {
-                if (reading == null)
+                if (reading.Property1 == null)
                 {
-                    invalidReadings.Add((reading, ""));
+                    invalidReadings.Add(reading);
                 }
             }
 
-            return invalidReadings;
+            return invalidReadings.Any() ? invalidReadings : null;
         }
     }
 }

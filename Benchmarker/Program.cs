@@ -10,7 +10,7 @@ namespace Benchmarker
     {
         static void Main(string[] args)
         {
-            var results = BenchmarkRunner.Run<Demo>();
+            var results = BenchmarkRunner.Run<ReadingService>();
         }
     }
 }
