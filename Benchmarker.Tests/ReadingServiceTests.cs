@@ -15,7 +15,6 @@ public class ReadingServiceTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.Empty(result);
     }
     
     [Fact]
@@ -29,6 +28,5 @@ public class ReadingServiceTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.Empty(result);
     }
 }

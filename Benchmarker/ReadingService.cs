@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
@@ -24,18 +25,18 @@ namespace Benchmarker
         public List<Reading> IterateBySteps()
         {
             var validReadings = _readings.ToList();
-            var failedReadings = new List<Reading>();
+            var invalidReadings = new List<Reading>();
             foreach (var validationStep in _validationSteps)
             {
                 var validationResults = validationStep.ValidateReadings(_readings);
                 if (validationResults != null)
                 {
                     validReadings.RemoveAll(x => validationResults.Contains(x));
-                    failedReadings.AddRange(validationResults);
+                    invalidReadings.AddRange(validationResults);
                 }
             }
 
-            return failedReadings;
+            return invalidReadings;
         }
 
         [Benchmark]
@@ -60,12 +61,14 @@ namespace Benchmarker
         private List<Reading> GenerateReadings(int n)
         {
             var readings = new List<Reading>();
+            var random = new Random();
 
             for (var i = 0; i < n; i++)
             {
+                var isNull = random.Next(2) == 0;
                 var reading = new Reading
                 {
-                    Property1 = "Not null",
+                    Property1 = isNull ? null : "Not null",
                     Property2 = "Not null",
                     Property3 = "Not null"
                 };
